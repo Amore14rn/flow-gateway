@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+   flow-gateway:
+     build: app
+     command: ./wait-for-postgres.sh db ./flow-gateway
+     ports:
+       - 8000:8000
+     depends_on:
+       - db
+     environment:
+       - DB_PASSWORD=qwerty
+
+  db:
+    restart: always
+    image: postgres:latest
+    container_name: psql_test_db
+    volumes:
+    - ./.database/postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=qwerty
+    ports:
+      - 5436:5432
